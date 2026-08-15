@@ -13,7 +13,7 @@ const isLocalDev = ["localhost", "127.0.0.1"].includes(location.hostname);
 if ("serviceWorker" in navigator && !isLocalDev) {
   window.addEventListener("load", () => {
     navigator.serviceWorker.register("/sw.js").catch((err) => {
-      console.warn("[tripsy] service worker registration failed:", err.message);
+      console.warn("[bagsy] service worker registration failed:", err.message);
     });
   });
 } else if ("serviceWorker" in navigator && isLocalDev) {
@@ -965,14 +965,14 @@ async function finishOnboarding() {
     if (onboardingState.home) fields.home = onboardingState.home;
     await api("profile", { method: "POST", body: JSON.stringify({ action: "updateFields", fields }) });
   } catch (err) {
-    console.warn("[tripsy] onboarding save failed, continuing anyway:", err.message);
+    console.warn("[bagsy] onboarding save failed, continuing anyway:", err.message);
   }
   closeOnboarding();
 }
 
 function skipOnboarding() {
   api("profile", { method: "POST", body: JSON.stringify({ action: "updateFields", fields: { onboarded: true } }) })
-    .catch((err) => console.warn("[tripsy] failed to mark onboarding skipped:", err.message))
+    .catch((err) => console.warn("[bagsy] failed to mark onboarding skipped:", err.message))
     .finally(closeOnboarding);
 }
 

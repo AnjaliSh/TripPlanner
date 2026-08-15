@@ -5,7 +5,7 @@
 // lib/store.js), so a cached response would be stale or worse, another
 // visitor's old snapshot.
 
-const CACHE_NAME = "tripsy-shell-v1";
+const CACHE_NAME = "bagsy-shell-v1";
 const SHELL_ASSETS = [
   "/",
   "/index.html",

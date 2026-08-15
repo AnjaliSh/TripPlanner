@@ -23,20 +23,20 @@ module.exports = async function handler(req, res) {
   }
   const page = (body.page || "").trim();
 
-  console.log(`[tripsy] feedback from session ${sessionId.slice(0, 8)}… (page: ${page || "unknown"}): ${message}`);
+  console.log(`[bagsy] feedback from session ${sessionId.slice(0, 8)}… (page: ${page || "unknown"}): ${message}`);
 
   let emailed = false;
   if (isEmailConfigured() && process.env.FEEDBACK_TO) {
     try {
       const result = await sendEmail({
         to: process.env.FEEDBACK_TO,
-        subject: "Tripsy beta feedback",
+        subject: "Bagsy beta feedback",
         text: `From session: ${sessionId}\nPage: ${page || "unknown"}\n\n${message}`,
         html: `<p><strong>From session:</strong> ${sessionId}</p><p><strong>Page:</strong> ${page || "unknown"}</p><p>${message.replace(/\n/g, "<br>")}</p>`,
       });
       emailed = result.sent;
     } catch (err) {
-      console.warn("[tripsy] feedback email failed:", err.message);
+      console.warn("[bagsy] feedback email failed:", err.message);
     }
   }
 

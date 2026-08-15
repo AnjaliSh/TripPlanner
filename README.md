@@ -1,4 +1,4 @@
-# Tripsy
+# Bagsy
 
 A small, (almost) dependency-free web app for planning family trips from London:
 
@@ -42,7 +42,7 @@ Open http://localhost:3000. Visited places are stored in `data/visited-places.lo
    | `AI_DAILY_CALL_LIMIT` | Optional | Soft per-session daily cap on AI-calling endpoints (plan/chat/extract), so one tester can't run up the bill. Defaults to 8 if unset. |
    | `GOOGLE_MAPS_API_KEY` | Real accommodation listings in "Find real stays" | Free tier ($200/mo credit) at [console.cloud.google.com](https://console.cloud.google.com) — enable the **Places API (New)**. Without this, "Find real stays" still gives you live Booking.com/Airbnb search links, just no inline results. |
    | `RESEND_API_KEY` | Feedback button email + weekly email nudge | Free tier at [resend.com](https://resend.com) |
-   | `RESEND_FROM` | Feedback button email + weekly email nudge | e.g. `Tripsy <planner@yourdomain.com>` — Resend requires a verified sending domain, or use their shared test domain while you set this up |
+   | `RESEND_FROM` | Feedback button email + weekly email nudge | e.g. `Bagsy <planner@yourdomain.com>` — Resend requires a verified sending domain, or use their shared test domain while you set this up |
    | `FEEDBACK_TO` | Emailing feedback-button submissions | Your inbox. Feedback is always logged server-side (visible in Vercel function logs) even without this set. |
    | `RESEND_TO` | Weekly email nudge | **Intentionally left unset for the beta** — see "Weekly email nudge is disabled" below. |
    | `CRON_SECRET` | Optional hardening | If set, only Vercel Cron's authenticated request can trigger `/api/cron/weekly-check` |
