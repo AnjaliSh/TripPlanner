@@ -19,8 +19,12 @@ module.exports = async function handler(req, res) {
   const sessionId = resolveSession(req, res);
 
   if (req.method === "GET") {
-    const profile = await store.getProfile(sessionId);
-    return sendJson(res, 200, { profile });
+    try {
+      const profile = await store.getProfile(sessionId);
+      return sendJson(res, 200, { profile });
+    } catch (err) {
+      return sendJson(res, 500, { error: String(err.message || err) });
+    }
   }
 
   if (req.method === "POST") {
