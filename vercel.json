@@ -1,0 +1,13 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/weekly-check",
+      "schedule": "0 8 * * *"
+    }
+  ],
+  "functions": {
+    "api/suggestions.js": {
+      "maxDuration": 60
+    }
+  }
+}

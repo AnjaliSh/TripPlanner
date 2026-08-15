@@ -1,0 +1,15 @@
+{
+  "name": "tripsy",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Family trip planner: UK long-weekend radar, curated toddler-friendly destinations, visited-places tracker, and an AI itinerary generator tailored to your travel profile.",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {}
+}

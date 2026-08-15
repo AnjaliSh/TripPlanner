@@ -1,0 +1,906 @@
+/* ============================================================
+   Family Trip Planner — design tokens
+   Direction: airmail envelope / boarding pass / cartography.
+   Warm chart-paper ground, navy cartography ink, airmail red +
+   blue stripe accents, a brass wax-seal gold for "visited" stamps.
+   ============================================================ */
+:root {
+  --chart: #efeae0;       /* page background — warm chart paper */
+  --panel: #fbf8f2;       /* card background — slightly lighter */
+  --panel-raised: #ffffff;
+  --ink: #1f2e3d;         /* primary text — cartography navy */
+  --ink-soft: #5b6b76;    /* muted text */
+  --border: #ddd4c1;
+  --airmail-red: #c2452f; /* accent — act now / hot */
+  --airmail-red-soft: #f4e0da;
+  --airmail-blue: #2b5c7a; /* accent — links / plan actions */
+  --airmail-blue-soft: #dfe8ec;
+  --stamp-gold: #a9822f;  /* visited-place wax seal */
+  --stamp-gold-soft: #f1e6cc;
+  --good: #4c7a5e;
+  --good-soft: #e2ede4;
+  --radius: 10px;
+  --radius-lg: 16px;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-body: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--chart);
+  background-image:
+    radial-gradient(circle at 1px 1px, rgba(31,46,61,0.05) 1px, transparent 0);
+  background-size: 22px 22px;
+  color: var(--ink);
+  font-family: var(--font-body);
+  line-height: 1.5;
+}
+
+a { color: var(--airmail-blue); }
+
+button { font-family: inherit; }
+
+/* ---------- Header: boarding-pass strip ---------- */
+header.top {
+  max-width: 1080px;
+  margin: 28px auto 0;
+  padding: 0 24px;
+}
+
+.boarding-strip {
+  display: flex;
+  align-items: stretch;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.stub-main {
+  flex: 1;
+  padding: 22px 24px;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--airmail-blue);
+  margin: 0 0 8px;
+}
+
+.stub-main h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.9rem;
+  margin: 0 0 8px;
+}
+
+.tagline { margin: 0 0 8px; max-width: 56ch; color: var(--ink-soft); font-weight: 500; }
+
+.stub-main p.muted { margin: 0; max-width: 56ch; }
+
+.stub-field {
+  width: 140px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  border-left: 2px dashed var(--border);
+  background: repeating-linear-gradient(
+      135deg,
+      var(--airmail-red) 0 10px,
+      var(--panel-raised) 10px 20px,
+      var(--panel-raised) 20px 30px,
+      var(--airmail-blue) 30px 40px,
+      var(--panel-raised) 40px 50px
+    );
+  background-size: 100% 6px;
+  background-repeat: no-repeat;
+  background-position: top, bottom;
+  position: relative;
+}
+
+.stub-field::before,
+.stub-field::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  height: 6px;
+  background: repeating-linear-gradient(
+    -45deg,
+    var(--airmail-red) 0 8px,
+    var(--panel-raised) 8px 16px,
+    var(--panel-raised) 16px 24px,
+    var(--airmail-blue) 24px 32px,
+    var(--panel-raised) 32px 40px
+  );
+}
+.stub-field::before { top: 0; }
+.stub-field::after { bottom: 0; }
+
+.stub-label {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.stub-value {
+  font-family: var(--font-mono);
+  font-size: 1.7rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+}
+
+/* ---------- Tabs: ticket-stub navigation ---------- */
+nav.tabs {
+  max-width: 1080px;
+  margin: 20px auto 0;
+  padding: 0 24px;
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+}
+
+nav.tabs button {
+  border: 1px solid var(--border);
+  border-bottom: none;
+  background: var(--chart);
+  padding: 10px 16px;
+  font-size: 0.86rem;
+  font-family: var(--font-mono);
+  letter-spacing: 0.01em;
+  color: var(--ink-soft);
+  cursor: pointer;
+  border-radius: 8px 8px 0 0;
+  position: relative;
+  top: 1px;
+}
+
+nav.tabs button.active {
+  color: var(--ink);
+  background: var(--panel);
+  font-weight: 600;
+  border-bottom: 1px solid var(--panel);
+}
+
+main {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 20px 24px 60px;
+  border-top: 1px solid var(--border);
+}
+
+section.panel { display: none; padding-top: 24px; }
+section.panel.active { display: block; }
+
+/* ---------- Cards ---------- */
+.card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px 20px;
+  margin-bottom: 16px;
+}
+
+.card h3 { font-family: var(--font-display); font-weight: 600; margin: 0 0 6px; font-size: 1.15rem; }
+
+.muted { color: var(--ink-soft); font-size: 0.9rem; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+  gap: 16px;
+}
+
+/* [hidden] and .grid{display:grid} tie on specificity, so the class would
+   otherwise win over JS toggling the hidden attribute (same cascade trap
+   as .onboarding/.feedback-modal elsewhere in this file) — e.g.
+   #suggestions-list never actually hides behind the detail view. */
+.grid[hidden] { display: none; }
+
+/* ---------- Long weekend "ticket" cards ---------- */
+.ticket {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+}
+
+.ticket.hot { border-color: var(--airmail-red); }
+
+.ticket-body { flex: 1; padding: 16px 18px; }
+.ticket-body h3 { font-family: var(--font-display); font-size: 1.05rem; margin: 0 0 6px; }
+
+.ticket-dates {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.ticket-stub {
+  width: 92px;
+  flex-shrink: 0;
+  border-left: 2px dashed var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  background: repeating-linear-gradient(
+    var(--panel),
+    var(--panel) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+}
+
+.ticket.hot .ticket-stub { color: var(--airmail-red); }
+
+.pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  background: var(--good-soft);
+  color: var(--good);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  margin-right: 6px;
+}
+
+.pill.warn { background: var(--airmail-red-soft); color: var(--airmail-red); }
+
+/* ---------- Destination / suggestion cards ---------- */
+.dest-card {
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Photo destination cards — real landmark photo, dimmed enough that all
+   text stays readable, per the explicit "background photo, dimmed" ask.
+   background-image itself is set inline per-card (dynamic URL); this rule
+   only handles sizing/position and the text-color overrides. */
+.dest-card.has-photo {
+  background-size: cover;
+  background-position: center;
+  border-color: rgba(255, 255, 255, 0.14);
+}
+.dest-card.has-photo .dest-head h3 { color: #fff; }
+.dest-card.has-photo .dest-code { color: #fff; border-color: rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.1); }
+.dest-card.has-photo .muted { color: rgba(245, 241, 232, 0.88); }
+.dest-card.has-photo .dest-body > p { color: #f2ede1; }
+.dest-card.has-photo .tag { background: rgba(255, 255, 255, 0.18); color: #fff; }
+.dest-card.has-photo .weather-line { color: rgba(245, 241, 232, 0.9); }
+.dest-card.has-photo .btn-link { background: rgba(255, 255, 255, 0.2); color: #fff; }
+.dest-card.has-photo .stay-results { border-top-color: rgba(255, 255, 255, 0.25); }
+.dest-card.has-photo .stay-listing { border-bottom-color: rgba(255, 255, 255, 0.18); }
+.photo-credit {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: rgba(245, 241, 232, 0.6);
+  text-align: right;
+  padding: 0 18px 10px;
+}
+
+.dest-head {
+  padding: 16px 18px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+}
+
+.dest-head h3 { font-family: var(--font-display); margin: 0; font-size: 1.1rem; }
+
+.dest-code {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--ink-soft);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 2px 6px;
+  flex-shrink: 0;
+}
+
+.dest-body { padding: 8px 18px 18px; flex: 1; display: flex; flex-direction: column; gap: 8px; }
+
+.tag {
+  display: inline-block;
+  font-size: 0.74rem;
+  background: var(--airmail-blue-soft);
+  color: var(--airmail-blue);
+  padding: 2px 8px;
+  border-radius: 999px;
+  margin: 2px 4px 0 0;
+}
+
+.dest-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.btn-link {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--airmail-blue);
+  background: var(--airmail-blue-soft);
+  border: none;
+  border-radius: 6px;
+  padding: 6px 10px;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.btn-link:hover { filter: brightness(0.96); }
+
+.stay-results { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border); }
+.stay-listing { display: flex; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--border); }
+.stay-listing:last-child { border-bottom: none; }
+.stay-listing img { width: 64px; height: 64px; object-fit: cover; border-radius: 8px; flex-shrink: 0; background: var(--chart); }
+.stay-listing .stay-meta { font-size: 0.85rem; }
+.stay-listing .stay-meta .name { font-weight: 600; }
+
+.photo-gallery {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed var(--border);
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 8px;
+}
+/* [hidden] vs display:grid cascade tie — same trap as .grid/.onboarding/
+   .feedback-modal elsewhere in this file; see .grid[hidden] for the writeup. */
+.photo-gallery[hidden] { display: none; }
+.gallery-thumb {
+  display: block;
+  aspect-ratio: 1;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--chart);
+}
+.gallery-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; transition: transform 0.15s ease; }
+.gallery-thumb:hover img { transform: scale(1.06); }
+
+/* ---------- Visited places: passport stamps ---------- */
+.stamp-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 14px;
+  margin-top: 10px;
+}
+
+.stamp-card {
+  border: 2px solid var(--stamp-gold);
+  border-radius: var(--radius);
+  padding: 14px;
+  position: relative;
+  background: var(--stamp-gold-soft);
+  transform: rotate(var(--tilt, -1deg));
+}
+
+.stamp-card:nth-child(3n) { --tilt: 1.2deg; }
+.stamp-card:nth-child(3n+1) { --tilt: -1deg; }
+.stamp-card:nth-child(3n+2) { --tilt: 0.5deg; }
+
+.stamp-card .stamp-name { font-family: var(--font-display); font-weight: 600; font-size: 1.02rem; }
+.stamp-card .stamp-meta { font-family: var(--font-mono); font-size: 0.74rem; color: var(--stamp-gold); text-transform: uppercase; letter-spacing: 0.05em; }
+.stamp-card .stamp-notes { font-size: 0.84rem; color: var(--ink-soft); margin-top: 6px; }
+
+.stamp-card button.link {
+  margin-top: 8px;
+}
+
+/* ---------- Forms ---------- */
+.field-row { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 14px; }
+.field-row input, .field-row select, .field-row textarea {
+  flex: 1;
+  min-width: 140px;
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 0.92rem;
+  font-family: inherit;
+  background: var(--panel-raised);
+  color: var(--ink);
+}
+
+button.primary {
+  background: var(--airmail-red);
+  color: white;
+  border: none;
+  padding: 9px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.92rem;
+  font-weight: 600;
+}
+
+button.primary:disabled { opacity: 0.5; cursor: default; }
+
+button.link {
+  background: none;
+  border: none;
+  color: var(--airmail-blue);
+  cursor: pointer;
+  font-size: 0.82rem;
+  padding: 0;
+  font-family: var(--font-mono);
+}
+
+/* ---------- Map ---------- */
+.map-canvas {
+  width: 100%;
+  height: 520px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border);
+  margin-top: 14px;
+  overflow: hidden;
+}
+
+.leaflet-popup-content-wrapper { border-radius: 8px; font-family: var(--font-body); }
+.leaflet-popup-content h4 { font-family: var(--font-display); margin: 0 0 4px; }
+.popup-thumb { width: 100%; height: 80px; object-fit: cover; border-radius: 6px; margin-bottom: 6px; }
+
+/* ---------- Misc ---------- */
+.section-title {
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--ink-soft);
+  margin: 22px 0 4px;
+}
+
+.itinerary-output {
+  white-space: pre-wrap;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  font-size: 0.92rem;
+  font-family: var(--font-body);
+}
+
+.banner {
+  background: var(--good-soft);
+  color: var(--good);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  margin-bottom: 16px;
+}
+
+.error-banner {
+  background: var(--airmail-red-soft);
+  color: var(--airmail-red);
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 0.88rem;
+  margin-bottom: 16px;
+}
+
+@media (max-width: 640px) {
+  .boarding-strip { flex-direction: column; }
+  .stub-field { width: 100%; flex-direction: row; border-left: none; border-top: 2px dashed var(--border); padding: 10px; }
+}
+
+/* Respect reduced-motion preferences: nothing here animates by default,
+   this is a guard for any future additions. */
+@media (prefers-reduced-motion: reduce) {
+  * { scroll-behavior: auto !important; }
+}
+
+/* ---------- Mobile bottom nav ---------- */
+@media (max-width: 640px) {
+  nav.tabs {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
+    background: var(--panel-raised);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -4px 16px rgba(31, 46, 61, 0.08);
+    justify-content: space-between;
+    gap: 0;
+    z-index: 20;
+  }
+  nav.tabs button {
+    flex: 1;
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+    padding: 6px 2px;
+    top: 0;
+  }
+  nav.tabs button .tab-icon { font-size: 1.2rem; line-height: 1; }
+  nav.tabs button .tab-label { font-size: 0.62rem; letter-spacing: 0; }
+  nav.tabs button.active { background: var(--airmail-blue-soft); color: var(--airmail-blue); font-weight: 600; }
+  main { padding-bottom: 84px; }
+}
+
+/* ---------- Match score + weather badges ---------- */
+.match-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--good-soft);
+  color: var(--good);
+}
+.match-badge.partial { background: var(--stamp-gold-soft); color: var(--stamp-gold); }
+.match-badge.low { background: var(--airmail-red-soft); color: var(--airmail-red); }
+
+.weather-line {
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+}
+
+/* ---------- Feedback / rating chips ---------- */
+.chip-group { display: flex; gap: 6px; flex-wrap: wrap; }
+.chip {
+  border: 1px solid var(--border);
+  background: var(--panel-raised);
+  border-radius: 999px;
+  padding: 5px 12px;
+  font-size: 0.82rem;
+  cursor: pointer;
+  font-family: var(--font-body);
+}
+.chip.selected { border-color: var(--airmail-blue); background: var(--airmail-blue-soft); font-weight: 600; }
+
+.rating-badge {
+  font-size: 0.9rem;
+}
+
+/* ---------- Preference-extraction suggestion chips ---------- */
+.suggestion-chip-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 8px 10px;
+  border: 1px dashed var(--border);
+  border-radius: 8px;
+  margin-top: 6px;
+  font-size: 0.86rem;
+}
+.suggestion-chip-row .sug-section {
+  font-family: var(--font-mono);
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  display: block;
+}
+.suggestion-chip-row .sug-actions { display: flex; gap: 6px; flex-shrink: 0; }
+.suggestion-chip-row button {
+  border: none;
+  border-radius: 6px;
+  padding: 4px 9px;
+  font-size: 0.78rem;
+  cursor: pointer;
+}
+.suggestion-chip-row .accept { background: var(--good-soft); color: var(--good); }
+.suggestion-chip-row .reject { background: var(--border); color: var(--ink-soft); }
+.suggestion-chip-row.resolved { opacity: 0.55; }
+
+/* ---------- Destination detail view ---------- */
+.dest-detail { background: var(--panel); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; }
+.detail-hero {
+  background-size: cover;
+  background-position: center;
+  background-color: var(--ink);
+  padding: 18px 24px 20px;
+  color: #fff;
+}
+.detail-hero.no-photo { background: linear-gradient(135deg, var(--airmail-blue), var(--ink)); }
+.detail-hero .back-btn { background: rgba(255, 255, 255, 0.2); color: #fff; padding: 5px 10px; border-radius: 6px; }
+.detail-hero h2 { font-family: var(--font-display); margin: 10px 0 8px; font-size: 1.6rem; text-shadow: 0 2px 8px rgba(0, 0, 0, 0.4); }
+.detail-body { padding: 20px 24px 24px; }
+.detail-stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin: 16px 0; }
+.detail-stats .stat { background: var(--chart); border-radius: 8px; padding: 10px 12px; }
+.detail-stats .stat-label { font-family: var(--font-mono); font-size: 0.66rem; text-transform: uppercase; color: var(--ink-soft); }
+.detail-stats .stat-value { font-size: 0.95rem; margin-top: 2px; }
+.detail-criteria { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0 6px; }
+.criterion-pill { font-size: 0.76rem; padding: 3px 9px; border-radius: 999px; }
+.criterion-pill.yes { background: var(--good-soft); color: var(--good); }
+.criterion-pill.no { background: var(--border); color: var(--ink-soft); }
+
+/* ---------- AI chat customization ---------- */
+.chat-panel { margin-top: 16px; border: 1px solid var(--border); border-radius: var(--radius); overflow: hidden; }
+.chat-messages { max-height: 360px; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; background: var(--chart); }
+.chat-bubble { max-width: 82%; padding: 9px 13px; border-radius: 14px; font-size: 0.9rem; white-space: pre-wrap; line-height: 1.45; }
+.chat-bubble.user { align-self: flex-end; background: var(--airmail-blue); color: #fff; border-bottom-right-radius: 4px; }
+.chat-bubble.assistant { align-self: flex-start; background: var(--panel-raised); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+.chat-input-row { display: flex; gap: 8px; padding: 10px; background: var(--panel); }
+.chat-input-row input { flex: 1; }
+
+/* ---------- Profile editing ---------- */
+.profile-points { list-style: none; margin: 0; padding: 0; }
+.profile-points li {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 6px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 0.92rem;
+}
+.profile-points li:last-child { border-bottom: none; }
+.profile-points button.remove-point {
+  border: none;
+  background: none;
+  color: var(--airmail-red);
+  cursor: pointer;
+  font-size: 0.78rem;
+  flex-shrink: 0;
+  font-family: var(--font-mono);
+}
+.add-point-row { display: flex; gap: 8px; margin-top: 10px; }
+.add-point-row input { flex: 1; }
+
+/* ---------- Onboarding (first-visit swipe-card flow) ---------- */
+.onboarding {
+  position: fixed;
+  inset: 0;
+  /* Leaflet's own panes (tile/marker/tooltip/popup) use z-index up to 700,
+     and .leaflet-container is position:relative with no z-index of its
+     own, so it doesn't trap them in a sub-context — those values compare
+     directly against ours in the page's root stacking context. A modal
+     z-index has to clear that, not just look "high enough" in isolation. */
+  z-index: 2000;
+  background: rgba(31, 46, 61, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* [hidden] and .onboarding{display:flex} tie on specificity, and source
+   order alone would let display:flex win even when the element is hidden
+   — pin this higher so JS toggling the `hidden` attribute actually hides it. */
+.onboarding[hidden] { display: none; }
+
+.onboarding-card {
+  width: 100%;
+  max-width: 420px;
+  max-height: 90vh;
+  overflow-y: auto;
+  background: var(--panel-raised);
+  border-radius: var(--radius-lg);
+  padding: 20px 22px 24px;
+  box-shadow: 0 20px 50px rgba(31, 46, 61, 0.35);
+}
+
+.onboarding-top { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
+
+.onboarding-progress {
+  flex: 1;
+  height: 6px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.onboarding-progress-bar {
+  height: 100%;
+  width: 0%;
+  background: var(--airmail-blue);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.onboarding-skip {
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  font-family: var(--font-mono);
+  font-size: 0.76rem;
+  cursor: pointer;
+  text-decoration: underline;
+  flex-shrink: 0;
+  padding: 0;
+}
+
+.onboarding-step h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 1.35rem;
+  margin: 0 0 6px;
+}
+
+.onboarding-step p.muted { margin: 0 0 16px; }
+
+.onboarding-actions { margin-top: 18px; display: flex; justify-content: flex-end; }
+
+.onboarding-field { margin-bottom: 16px; }
+.onboarding-field label {
+  display: block;
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--ink-soft);
+  margin-bottom: 6px;
+}
+
+/* Swipe-card deck */
+.swipe-deck { position: relative; height: 250px; margin: 6px 0 8px; }
+
+.swipe-card {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  touch-action: pan-y;
+  cursor: grab;
+  user-select: none;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+/* Later siblings (the peek cards behind) would otherwise paint over the
+   interactive top card since they share a stacking context — pin z-index
+   explicitly so depth 0 always wins regardless of DOM order. */
+.swipe-card[data-depth="0"] { z-index: 3; }
+.swipe-card[data-depth="1"] { z-index: 2; }
+.swipe-card[data-depth="2"] { z-index: 1; }
+
+.swipe-card.dragging { transition: none; cursor: grabbing; }
+.swipe-card[data-depth="1"] { transform: scale(0.95) translateY(10px); opacity: 0.85; }
+.swipe-card[data-depth="2"] { transform: scale(0.9) translateY(18px); opacity: 0.55; }
+
+.swipe-card .swipe-icon { font-size: 2.1rem; margin-bottom: 10px; }
+.swipe-card .swipe-text { font-family: var(--font-display); font-size: 1.08rem; line-height: 1.4; }
+.swipe-card .swipe-section { font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--ink-soft); margin-bottom: 10px; }
+
+.swipe-stamp {
+  position: absolute;
+  top: 16px;
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.08em;
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: 3px solid;
+  opacity: 0;
+  transform: rotate(-12deg);
+}
+
+.swipe-stamp.stamp-keep { right: 14px; color: var(--good); border-color: var(--good); transform: rotate(-12deg); }
+.swipe-stamp.stamp-skip { left: 14px; color: var(--airmail-red); border-color: var(--airmail-red); transform: rotate(12deg); }
+
+.swipe-buttons { display: flex; justify-content: center; gap: 20px; margin-top: 4px; }
+
+.swipe-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--panel-raised);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.3rem;
+}
+
+.swipe-btn.skip { border: 2px solid var(--airmail-red); color: var(--airmail-red); }
+.swipe-btn.keep { border: 2px solid var(--good); color: var(--good); }
+
+/* Pacing slider */
+.pace-slider-row input[type="range"] {
+  width: 100%;
+  accent-color: var(--airmail-blue);
+}
+.pace-slider-labels { display: flex; justify-content: space-between; font-size: 0.76rem; color: var(--ink-soft); margin-top: 6px; }
+.pace-slider-value { text-align: center; font-family: var(--font-display); font-size: 1.05rem; margin-top: 10px; min-height: 1.4em; }
+
+/* ---------- Feedback ---------- */
+.feedback-fab {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  /* Same Leaflet-pane-escapes-the-stacking-context reasoning as .onboarding
+     below — this button sits on every tab including Map, so it needs the
+     same headroom above Leaflet's z-index:700 popup pane. */
+  z-index: 1000;
+  background: var(--ink);
+  color: var(--panel-raised);
+  border: none;
+  border-radius: 999px;
+  padding: 11px 18px;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(31, 46, 61, 0.3);
+}
+
+.feedback-fab:hover { filter: brightness(1.15); }
+
+.feedback-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 2000; /* see the comment on .onboarding's z-index for why this needs to clear Leaflet's panes, not just look high */
+  background: rgba(31, 46, 61, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+/* Same [hidden]-vs-display:flex cascade tie as .onboarding — see there. */
+.feedback-modal[hidden] { display: none; }
+
+.feedback-modal-card {
+  width: 100%;
+  max-width: 420px;
+  background: var(--panel-raised);
+  border-radius: var(--radius-lg);
+  padding: 20px 22px 24px;
+  box-shadow: 0 20px 50px rgba(31, 46, 61, 0.35);
+}
+
+.feedback-modal-title { font-family: var(--font-display); font-weight: 600; font-size: 1.25rem; margin: 0; flex: 1; }
+
+.feedback-textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 9px 10px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  background: var(--panel-raised);
+  color: var(--ink);
+  resize: vertical;
+}
+
+.feedback-status { margin-top: 8px; min-height: 1.2em; }
+
+/* Visible keyboard focus */
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+  outline: 2px solid var(--airmail-blue);
+  outline-offset: 2px;
+}

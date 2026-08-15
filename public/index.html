@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Tripsy</title>
+
+<!-- PWA: manifest + icons + theming -->
+<link rel="manifest" href="/manifest.json" />
+<link rel="icon" type="image/png" href="/icons/favicon-32.png" />
+<link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
+<meta name="theme-color" content="#1f2e3d" />
+<!-- iOS ignores <link rel="manifest">, so home-screen install needs these explicitly -->
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="Tripsy" />
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+<link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+
+  <!-- ===== Main app ===== -->
+  <div id="app">
+    <header class="top">
+      <div class="boarding-strip">
+        <div class="stub-main">
+          <p class="eyebrow">Tripsy</p>
+          <h1>🧳 Where to next?</h1>
+          <p class="tagline">Hassle-free planning for busy travellers.</p>
+          <p class="muted">Long weekends from London, tracked · destinations tailored to your family · already-visited places excluded automatically.</p>
+        </div>
+        <div class="stub-field">
+          <span class="stub-label">Origin</span>
+          <span class="stub-value">LON</span>
+        </div>
+      </div>
+    </header>
+
+    <nav class="tabs">
+      <button data-tab="radar" class="active"><span class="tab-icon">🧭</span><span class="tab-label">Radar</span></button>
+      <button data-tab="suggestions"><span class="tab-icon">💡</span><span class="tab-label">Suggestions</span></button>
+      <button data-tab="map"><span class="tab-icon">🗺️</span><span class="tab-label">Map</span></button>
+      <button data-tab="visited"><span class="tab-icon">📍</span><span class="tab-label">Visited</span></button>
+      <button data-tab="plan"><span class="tab-icon">🤖</span><span class="tab-label">Plan AI</span></button>
+      <button data-tab="profile"><span class="tab-icon">👤</span><span class="tab-label">Profile</span></button>
+    </nav>
+
+    <main>
+      <section id="radar" class="panel active">
+        <div id="radar-list" class="grid"><p class="muted">Loading long weekends…</p></div>
+      </section>
+
+      <section id="suggestions" class="panel">
+        <p class="muted" id="suggestions-meta"></p>
+        <div id="suggestions-list" class="grid"></div>
+        <div id="suggestions-detail" class="dest-detail" hidden></div>
+      </section>
+
+      <section id="map" class="panel">
+        <p class="muted">Every suggestion still on the table, plotted from London.</p>
+        <div id="map-canvas" class="map-canvas"></div>
+      </section>
+
+      <section id="visited" class="panel">
+        <div class="card">
+          <h3>Add a visited place</h3>
+          <div class="field-row">
+            <input id="visited-name" placeholder="Place name, e.g. Bilbao" />
+            <input id="visited-country" placeholder="Country (optional)" />
+            <input id="visited-year" placeholder="Year (optional)" />
+          </div>
+          <div class="field-row">
+            <textarea id="visited-notes" placeholder="Notes (optional)" rows="2"></textarea>
+          </div>
+          <div class="field-row" style="align-items:center;">
+            <span class="muted" style="margin-right:4px;">How was it?</span>
+            <div id="rating-chips" class="chip-group">
+              <button type="button" class="chip" data-rating="great">🟢 Great</button>
+              <button type="button" class="chip" data-rating="okay">🟡 Okay</button>
+              <button type="button" class="chip" data-rating="poor">🔴 Poor</button>
+            </div>
+          </div>
+          <div class="dest-actions" style="margin-bottom:10px;">
+            <button class="primary" id="visited-add-btn">Add to visited list</button>
+            <button class="btn-link" id="extract-btn" type="button">✨ Process &amp; extract preferences</button>
+          </div>
+          <div id="extract-results"></div>
+        </div>
+        <div class="section-title">Already visited (excluded from suggestions)</div>
+        <div id="visited-list" class="stamp-grid"></div>
+      </section>
+
+      <section id="plan" class="panel">
+        <div class="card">
+          <h3>Ask Claude to plan a trip</h3>
+          <p class="muted">Requires <code>ANTHROPIC_API_KEY</code> to be set on the deployment. Picks up your travel profile and visited-places list automatically.</p>
+          <div class="field-row">
+            <select id="plan-destination"></select>
+            <input id="plan-checkin" type="date" title="Depart" />
+            <input id="plan-checkout" type="date" title="Return" />
+          </div>
+          <p class="muted" id="plan-date-error" style="color: var(--airmail-red); display: none;"></p>
+          <div class="field-row">
+            <textarea id="plan-extra" placeholder="Anything extra to factor in (optional)" rows="2"></textarea>
+          </div>
+          <button class="primary" id="plan-btn">Generate itinerary</button>
+        </div>
+        <div id="plan-links"></div>
+        <div id="plan-output"></div>
+      </section>
+
+      <section id="profile" class="panel">
+        <div id="profile-content"><p class="muted">Loading profile…</p></div>
+      </section>
+    </main>
+  </div>
+
+  <!-- ===== First-visit onboarding (public/app.js renders steps into #onboarding-body) ===== -->
+  <div id="onboarding" class="onboarding" hidden>
+    <div class="onboarding-card">
+      <div class="onboarding-top">
+        <div class="onboarding-progress"><div id="onboarding-progress-bar" class="onboarding-progress-bar"></div></div>
+        <button type="button" id="onboarding-skip" class="onboarding-skip">Skip</button>
+      </div>
+      <div id="onboarding-body" class="onboarding-body"></div>
+    </div>
+  </div>
+
+  <!-- ===== Feedback ===== -->
+  <button type="button" id="feedback-fab" class="feedback-fab">💬 Feedback</button>
+  <div id="feedback-modal" class="feedback-modal" hidden>
+    <div class="feedback-modal-card">
+      <div class="onboarding-top">
+        <h2 class="feedback-modal-title">Send feedback</h2>
+        <button type="button" id="feedback-close" class="onboarding-skip">Close</button>
+      </div>
+      <p class="muted">This is a public beta — tell us what's broken, confusing, or missing.</p>
+      <textarea id="feedback-text" class="feedback-textarea" rows="5" placeholder="What's on your mind?"></textarea>
+      <div id="feedback-status" class="muted feedback-status"></div>
+      <div class="onboarding-actions">
+        <button type="button" class="primary" id="feedback-submit">Send</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
