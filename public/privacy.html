@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Privacy — Bagsy</title>
+<link rel="icon" type="image/png" href="/icons/favicon-32.png" />
+<meta name="theme-color" content="#1f2e3d" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div class="legal-page">
+    <a class="btn-link" href="/">← Back to Bagsy</a>
+    <header class="legal-header">
+      <p class="eyebrow">Bagsy</p>
+      <h1>Privacy notice</h1>
+      <p class="muted">Last updated: August 2026</p>
+    </header>
+
+    <div class="card legal-card">
+      <p>Bagsy is a personal, non-commercial project run by one person, currently in public beta. There's no company behind it. A few things up front:</p>
+      <ul>
+        <li>There's no login and no account — nothing to sign up for, nothing tying this to your real identity.</li>
+        <li>Your data is never shared with, or visible to, other visitors.</li>
+        <li>Nothing here is sold, and nothing is used for advertising — Bagsy has no ads and no analytics/tracking of any kind.</li>
+      </ul>
+
+      <h3>1. What's collected</h3>
+      <p>The moment you first open Bagsy, it sets one signed, random session cookie (<code>bagsy_sid</code>) so it can tell you apart from other visitors — no name, email, or account required. Everything else is scoped to that cookie:</p>
+      <ul>
+        <li><strong>Travel profile</strong> — whatever you enter or edit in the Profile tab (travelers, home airport, preference notes).</li>
+        <li><strong>Visited places</strong> — places you've logged as already visited, with any notes and rating you add.</li>
+        <li><strong>Feedback</strong> — if you use the 💬 Feedback button, the message you write and, optionally, which page you were on.</li>
+      </ul>
+      <p>This is stored (via Upstash Redis, a third-party database provider) for as long as your session cookie is valid — up to a year, or until you clear cookies for this site, at which point Bagsy can no longer connect you to that stored data (see "Deleting your data" below).</p>
+
+      <h3>2. Who it's shared with, and why</h3>
+      <p>Bagsy calls a few external services to do its job. Each one only receives data relevant to the feature it powers, and only when that feature is actually used:</p>
+      <ul>
+        <li><strong>Anthropic (Claude API)</strong> — powers "Plan with AI," AI chat, notes→profile extraction, and personalized suggestions. Your travel profile and visited places are sent as part of the request when you use one of these. Anthropic's own API terms state that data submitted through the API is not used to train their models.</li>
+        <li><strong>Google Places API</strong> — powers "Find real stays." Only a destination search query is sent, not your profile.</li>
+        <li><strong>Wikipedia's public API</strong> — powers landmark photos. This is a public, keyless, anonymous lookup; nothing about you is sent.</li>
+        <li><strong>Resend</strong> (email delivery) — if you submit feedback and the deployment has email configured, your feedback text and page context are sent to Resend for delivery to the person running this beta.</li>
+      </ul>
+      <p>None of these deployments are guaranteed to be configured — features that need a given service (marked in the app) simply won't work if it isn't, and nothing is sent to a service that isn't configured.</p>
+
+      <h3>3. Cookies</h3>
+      <p>Bagsy uses exactly one cookie: <code>bagsy_sid</code>. It's strictly functional — it's how the app knows which profile and visited-places list are yours — not used for tracking, advertising, or analytics. Because it's strictly necessary for the app to work at all, there's no cookie consent banner: there's nothing optional to opt in or out of.</p>
+
+      <h3>4. Data retention</h3>
+      <p>Your session cookie lasts up to a year. Cached AI-generated suggestions are kept for up to 30 days before being regenerated. There's currently no automatic deletion of profile/visited-places data tied to a still-valid cookie — see below for how to clear it yourself.</p>
+
+      <h3>5. Deleting your data</h3>
+      <p>Since there's no account or login, there's no separate "delete my account" flow — clearing your cookies for this site (or using a private/incognito window) disconnects you from any previously stored data; Bagsy has no way to link it back to you afterwards. If you'd like data actively removed from storage rather than just orphaned, use the 💬 Feedback button to ask — it goes straight to the person running this.</p>
+
+      <h3>6. Questions</h3>
+      <p>Use the 💬 Feedback button in the app for any privacy question — it reaches the person who runs this directly.</p>
+    </div>
+  </div>
+</body>
+</html>

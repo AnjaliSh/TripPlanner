@@ -119,6 +119,48 @@
     </main>
   </div>
 
+  <!-- ===== Fair questions (plain <details>/<summary> — no JS needed) ===== -->
+  <section class="faq-section">
+    <div class="section-title">Fair questions</div>
+    <div class="card faq-card">
+      <details>
+        <summary>Do I need to create an account?</summary>
+        <p>No. The first time you open Bagsy it quietly sets one anonymous session cookie so it can remember your profile and visited places — no sign-up, no email, no password.</p>
+      </details>
+      <details>
+        <summary>Is my data visible to other visitors?</summary>
+        <p>No. Everything — your profile, visited places, suggestions — is scoped privately to your own session cookie. Nobody else can read or edit it.</p>
+      </details>
+      <details>
+        <summary>Why did my suggestions change after I edited my profile?</summary>
+        <p>When an AI key is configured, suggestions are regenerated from your actual profile, not a fixed list — a different traveler gets different destinations and different reasons why. Without a key, you'll see the same curated shortlist everyone sees.</p>
+      </details>
+      <details>
+        <summary>How does the AI verify things like flight times or stroller access?</summary>
+        <p>Where possible, it runs live web searches to check specific, checkable claims — accessibility, flight routes, typical weather — rather than just guessing from training data. It's not foolproof; verify anything that really matters before you travel on it.</p>
+      </details>
+      <details>
+        <summary>Is this free to use?</summary>
+        <p>Yes, for you. AI features run on the beta operator's own budget, which is why there's a soft daily limit per visitor rather than an unlimited one.</p>
+      </details>
+      <details>
+        <summary>What happens if I clear my cookies or switch devices?</summary>
+        <p>You'll get a brand-new, empty anonymous session — your previous profile and visited places are still stored, but nothing can connect them to you anymore.</p>
+      </details>
+      <details>
+        <summary>How do I report a bug or suggest something?</summary>
+        <p>Use the 💬 Feedback button — it goes straight to the person running this beta.</p>
+      </details>
+    </div>
+  </section>
+
+  <footer class="site-footer">
+    <span>Bagsy — a personal beta project.</span>
+    <a href="/about.html">About</a>
+    <a href="/privacy.html">Privacy</a>
+    <a href="/terms.html">Terms</a>
+  </footer>
+
   <!-- ===== First-visit onboarding (public/app.js renders steps into #onboarding-body) ===== -->
   <div id="onboarding" class="onboarding" hidden>
     <div class="onboarding-card">

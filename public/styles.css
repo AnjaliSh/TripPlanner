@@ -904,3 +904,83 @@ a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible
   outline: 2px solid var(--airmail-blue);
   outline-offset: 2px;
 }
+
+/* ---------- FAQ (plain <details>/<summary>, no JS) ---------- */
+.faq-section {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.faq-card details {
+  border-bottom: 1px solid var(--border);
+  padding: 12px 0;
+}
+
+.faq-card details:last-child { border-bottom: none; }
+
+.faq-card summary {
+  font-family: var(--font-display);
+  font-weight: 600;
+  cursor: pointer;
+  list-style: none;
+}
+
+.faq-card summary::-webkit-details-marker { display: none; }
+
+.faq-card summary::before {
+  content: "+";
+  display: inline-block;
+  width: 1.2em;
+  color: var(--airmail-blue);
+  font-family: var(--font-mono);
+}
+
+.faq-card details[open] summary::before { content: "–"; }
+
+.faq-card details p { margin: 8px 0 0 1.2em; color: var(--ink-soft); max-width: 64ch; }
+
+/* ---------- Site footer ---------- */
+.site-footer {
+  max-width: 1080px;
+  margin: 32px auto 100px;
+  padding: 16px 24px 0;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+  color: var(--ink-soft);
+  font-size: 0.85rem;
+}
+
+.site-footer a { color: var(--ink-soft); text-decoration: underline; }
+.site-footer a:hover { color: var(--airmail-blue); }
+
+/* ---------- Standalone legal-ish pages (about/privacy/terms) ---------- */
+.legal-page {
+  max-width: 720px;
+  margin: 28px auto 60px;
+  padding: 0 24px;
+}
+
+.legal-header { margin: 20px 0 16px; }
+.legal-header h1 { font-family: var(--font-display); font-weight: 600; font-size: 1.7rem; margin: 4px 0; }
+
+.legal-card h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  margin: 22px 0 6px;
+  font-size: 1.05rem;
+}
+.legal-card h3:first-child { margin-top: 0; }
+.legal-card p { margin: 0 0 12px; }
+.legal-card ul { margin: 0 0 12px; padding-left: 1.4em; }
+.legal-card li { margin-bottom: 6px; }
+.legal-card code {
+  font-family: var(--font-mono);
+  background: var(--chart);
+  padding: 1px 5px;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
